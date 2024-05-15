@@ -1,15 +1,19 @@
 import pyautogui;
+import os
 import time
+
 from utilsClass import Utils
+from dotenv import load_dotenv
 
 class AutoGui:
     
     global util 
+    load_dotenv()
     util = Utils() 
 
     def importArchive(file):         
         try:    
-            imgOne = pyautogui.locateCenterOnScreen('C:\\Users\\tkdho\\Desktop\\program\\roboLogistica\\Imagens\\2.png', confidence=0.7)
+            imgOne = pyautogui.locateCenterOnScreen(os.environ['pathImg']+'2.png', confidence=0.7)
             if imgOne:      
                 pyautogui.click(imgOne.x, imgOne.y)
                 time.sleep(2)
