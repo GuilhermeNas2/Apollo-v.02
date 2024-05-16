@@ -33,7 +33,7 @@ from clienteClass import Cliente
 from utilsClass import Utils
 # cliente = input("Qual cliente devo consultar?")
 
-infos = Utils.readXML('3.xml')
-info = Cliente.searchCliente(infos)
-print(info)
+# infos = Utils.readXML('3.xml')
+# info = Cliente.searchCliente(infos)
+# print(info)
 # Cliente.searchCliente(cliente)

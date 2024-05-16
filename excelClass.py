@@ -9,9 +9,10 @@ class Excel:
      global path   
 
      load_dotenv()
-     path = os.environ['pathEx']
+     path = os.getenv("pathEx")
 
      def searchExcelBF(data):
+            print(path)
             nomeDoArquivo = path+"Fechamento BATE FORTE VARGEM .xlsx"
 
             try:     
@@ -48,3 +49,6 @@ class Excel:
             except:
                 text ="Arquivo não encontrado no destino."    
                 Utils.writeLog(text) 
+
+
+Excel.searchExcelBF(1)                

@@ -20,7 +20,7 @@ class Site:
     driver = webdriver.Chrome() 
 
     def getChrome():        
-        driver.get(os.environ["url"])
+        driver.get(os.getenv("url"))
         time.sleep(2)        
         driver.maximize_window()
         return driver
@@ -40,16 +40,16 @@ class Site:
                 raise
             try:    
                 if search:
-                    search.send_keys(os.environ["user"])                       
+                    search.send_keys(os.getenv("user"))                       
                     time.sleep(1)         
                     if searchSecond:
-                        searchSecond.send_keys(os.environ["password"])
+                        searchSecond.send_keys(os.getenv("password"))
                         time.sleep(1)       
                         if btnLogin:
                             time.sleep(1)    
                             btnLogin.click()
                             time.sleep(2)                                                                           
-                            Site.fillForm()           
+                            Site.fillForm()         
             except:            
                 text ='Falha ao inserir dados ou clicar para acessar'    
                 Utils.writeLog(text) 
@@ -103,22 +103,22 @@ class Site:
                                 Utils.writeLog(text)
                             
     def fillForm():
-        util = Utils()
-        
-        for i in range(0,len(util.dir_list)): 
-            try:    
-                Site.importFile(util.dir_list[i])
-                todayDate = Utils.getDate()
+        util = Utils()        
+        for i in range(0,len(util.dir_list)):     
+            try:          
+                Site.importFile(util.dir_list[i])                
                 todayDay = Utils.getDay()
 
                 inputDate = driver.find_element(By.XPATH, '//*[@id="divData"]/div/div/div/input')
                 inputDateTwo = driver.find_element(By.XPATH, '//*[@id="dadosTipoCTe"]/div[1]/div/div/div/div[2]/div/div/div/input')
                 inputText = driver.find_element(By.XPATH,'//*[@id="odc.observacao"]')
+                inputBall = driver.find_element(By.XPATH,'//*[@id="dadosTipoCTe"]/div[6]/div[2]/div/div/div[1]/div/div/label[2]/span')
 
-                if inputDate is None or inputDateTwo is None or inputText is None:
+                if inputDate is None or inputDateTwo is None or inputText is None or inputBall is None:
                     text ='Elemento não encontrado na tela do Form'    
                     Utils.writeLog(text) 
                     raise
+
                 try:        
                     if inputDate:                        
                         inputDate.send_keys(Keys.ENTER)
@@ -127,7 +127,7 @@ class Site:
                         if inputDateTwo:
                             inputDateTwo.send_keys(todayDay)
                             time.sleep(1)
-
+                            inputBall.click()
                             if inputText:                                    
                                 data = Utils.readXML(util.dir_list[i])                                
                                 info = Cliente.searchCliente(data)  
@@ -136,23 +136,29 @@ class Site:
                                 text ='Envio completo '+data['cliente']+" observações " + info    
                                 Utils.writeLog(text) 
 
-                                time.sleep(10)
-                                driver.refresh()
+                                btnSend = driver.find_element(By.XPATH, '//*[@id="formId"]/div/div/div/button[1]')
+                                if btnSend:
+                                    btnSend.click()
+                                    time.sleep(10)
+                                                                   
                 except:
                     text ='Falha ao tentar inserir os dados'    
                     Utils.writeLog(text) 
-                    raise             
+                    raise
             except:
-                time.sleep(5)
+                time.sleep(2)
                 driver.refresh()
-                Site.fillForm()
+        driver.quit()                          
+       
+            
+            
                
             
             
 
     def scripRobot():        
-            Site.login()
-                
+           Site.login()
+                  
                       
 
 Site.scripRobot()

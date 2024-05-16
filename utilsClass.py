@@ -13,7 +13,7 @@ class Utils:
     global dir_list     
     load_dotenv()
     
-    path = os.environ['pathXml']
+    path = os.getenv("pathXml")
     dir_list = os.listdir(path)          
 
     def __init__(self):
@@ -35,7 +35,7 @@ class Utils:
     def readXML(file):
         
         try:
-            archive = ET.parse(path+"\\"+file)    
+            archive = ET.parse(path+file)    
             root = archive.getroot() 
             # print(Utils.findElement(root))
             frase = root[0][0][25][0].text
