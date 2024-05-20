@@ -1,39 +1,102 @@
-# Pro FUTURO
-# def encontrar_palavra(array_vo, palavra):
-#     for item in array_vo:
-#         if isinstance(item, list):  # Verifica se é uma lista (array pai)
-#             # Se for uma lista, tenta encontrar a palavra nela
-#             resultado_pai = encontrar_palavra(item, palavra)
-#             if resultado_pai is not None:
-#                 return resultado_pai
-#         elif isinstance(item, str):  # Verifica se é uma string (array filho)
-#             # Se for uma string, verifica se é a palavra desejada
-#             if item == palavra:
-#                 return item
-#     return None  # Retorna None se a palavra não for encontrada
+# import xml.etree.ElementTree as ET
 
-# # Exemplo de array hierárquico
-# array_vo = ["pai", ["filho1", "filho2", ["neto1", "neto2"]], "outro_pai"]
+# def find_in_xml(element, target):
+#     stack = [(element, 0)]  # Inicializa a pilha com o elemento raiz e o contador
 
-# palavra = "neto1"
-# resultado = encontrar_palavra(array_vo, palavra)
-# if resultado is not None:
-#     print(f"A palavra '{palavra}' foi encontrada: {resultado}")
-# else:
-#     print(f"A palavra '{palavra}' não foi encontrada.")
+#     while stack:
+#         current_element, count = stack.pop()
 
+#         # Se o contador atingir o número de filhos, continuamos para o próximo item na pilha
+#         if count == len(list(current_element)):
+#             continue
 
+#         # Pega o filho atual
+#         child = list(current_element)[count]
 
-# while cond:     
-#     if row.iloc[count] == coluna:                            
-#         cond = False
-#     count+=1    
+#         # Se encontramos o alvo, retornamos
+#         if child.tag == target or child.text == target:
+#             return True
+
+#         # Empilhamos o estado atual (elemento atual e contador incrementado)
+#         stack.append((current_element, count + 1))
+
+#         # Empilhamos o novo elemento filho e começamos do índice 0
+#         stack.append((child, 0))
+
+#     return False  # Se a pilha estiver vazia e não encontramos o alvo, retornamos False
+
+# # Exemplo de uso:
+# xml_data = '''
+# <root>
+#     <element1>value1</element1>
+#     <element2>
+#         <subelement1>value2</subelement1>
+#         <subelement2>value3</subelement2>
+#     </element2>
+#     <element3>value4</element3>
+# </root>
+# '''
+
+# root = ET.parse("C:\Users\tkdho\Desktop\program\roboLogistica\Excel\3.xml")
+# target = "Venda Merc.Adq.Terc."
+# found = find_in_xml(root, target)
+# print("Encontrado:", found)
+
+from openpyxl import load_workbook
 
 from clienteClass import Cliente
 from utilsClass import Utils
-# cliente = input("Qual cliente devo consultar?")
 
-# infos = Utils.readXML('3.xml')
-# info = Cliente.searchCliente(infos)
-# print(info)
+# # Carregue o arquivo Excel
+# workbook = load_workbook('C:\\Users\\tkdho\\Desktop\\program\\roboLogistica\\Excel\\Fechamento BATE FORTE VARGEM .xlsx')
+
+# sheet = workbook['Dados Viagens']
+# # sheet = workbook.active
+# sua_palavra = "Notas"
+# # Itere sobre as células da planilha
+# for row in sheet.iter_rows():
+#     for cell in row:
+#         # Verifique se a célula contém a palavra desejada
+#         if isinstance(cell.value, str) and 'Notas' in cell.value:
+#             # Se sim, imprima o endereço da célula
+#             print(f'A palavra "{sua_palavra}" está na célula {cell.coordinate}')
+
+
+
+# from clienteClass import Cliente
+# from utilsClass import Utils
+# cliente = input("Qual cliente devo consultar?")
+# import imaplib
+
+# # Configurações de conexão
+# imap_host = 'imap.gmail.com'
+# imap_port = 993
+# username = "tkdhouse2@gmail.com"
+# password = 'pxij usxg jfyj xpoz'
+
+# # Conectando-se ao servidor IMAP do Gmail
+# mail = imaplib.IMAP4_SSL(imap_host, imap_port)
+# mail.login(username, password)
+
+# # Selecionando a caixa de entrada (inbox)
+# mail.select('inbox')
+
+# # Buscando e exibindo os últimos 5 emails
+# status, messages = mail.search(None, 'ALL')
+# messages_ids = messages[0].split()
+# latest_messages_ids = messages_ids[-5:]  # Pegando os últimos 5 IDs
+
+# for msg_id in latest_messages_ids:
+#     status, msg_data = mail.fetch(msg_id, '(RFC822)')
+#     raw_email = msg_data[0][1]
+#     print(raw_email)  # Aqui você pode processar ou exibir o email conforme necessário
+
+# # Fechando a conexão
+# mail.logout()
+    
+infos = Utils.readXML('4.xml')
+info = Cliente.searchCliente(infos)
+print(info)
 # Cliente.searchCliente(cliente)
+
+

@@ -4,7 +4,7 @@ class Cliente:
   
 
     clientes = {
-        "ATACADO BF VGP": Excel.searchExcelBF
+        "ATACADO BF VGP": Excel.searchExcelBF        
     }    
 
     def searchCliente(data):

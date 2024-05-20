@@ -66,7 +66,7 @@ class Site:
          if btnCTe:       
                 try:  
                     btnCTe.click()
-                    time.sleep(3)
+                    time.sleep(1)
                     btnImport = driver.find_element(By.XPATH, '//*[@id="modal-opcoes-emissao"]/div/div/div[2]/div/div[1]/button/i') 
                 except:                      
                     text ='Não achei o botão de importar'
@@ -74,9 +74,9 @@ class Site:
 
                 if btnImport:   
                     try:  
-                        time.sleep(3)
+                        time.sleep(1)
                         btnImport.click()
-                        time.sleep(3)
+                        time.sleep(1)
                         btnChoosefile = driver.find_element(By.XPATH,'//*[@id="dropzone"]/div')
                     except:                         
                         text ='Não achei o botão de enviar arquivo'   
@@ -85,9 +85,9 @@ class Site:
                     if btnChoosefile:  
                         try:      
                             btnChoosefile.click()
-                            time.sleep(2)
+                            time.sleep(1)
                             AutoGui.importArchive(file)
-                            time.sleep(2)
+                            time.sleep(1)
                             btnFImport = driver.find_element(By.XPATH,'//*[@id="btnImportarXML"]')
                             time.sleep(5)
                         except:                            
@@ -111,10 +111,12 @@ class Site:
 
                 inputDate = driver.find_element(By.XPATH, '//*[@id="divData"]/div/div/div/input')
                 inputDateTwo = driver.find_element(By.XPATH, '//*[@id="dadosTipoCTe"]/div[1]/div/div/div/div[2]/div/div/div/input')
-                inputText = driver.find_element(By.XPATH,'//*[@id="odc.observacao"]')
-                inputBall = driver.find_element(By.XPATH,'//*[@id="dadosTipoCTe"]/div[6]/div[2]/div/div/div[1]/div/div/label[2]/span')
+               
+              
+                span = driver.find_element(By.XPATH, '//*[@id="abaSeguroDiv"]/div/div[1]/h4/span')
+               
 
-                if inputDate is None or inputDateTwo is None or inputText is None or inputBall is None:
+                if inputDate is None or inputDateTwo is None:
                     text ='Elemento não encontrado na tela do Form'    
                     Utils.writeLog(text) 
                     raise
@@ -126,19 +128,41 @@ class Site:
 
                         if inputDateTwo:
                             inputDateTwo.send_keys(todayDay)
-                            time.sleep(1)
-                            inputBall.click()
-                            if inputText:                                    
-                                data = Utils.readXML(util.dir_list[i])                                
-                                info = Cliente.searchCliente(data)  
-                                inputText.send_keys(info)
-
-                                text ='Envio completo '+data['cliente']+" observações " + info    
-                                Utils.writeLog(text) 
+                            time.sleep(2)
+                            span.click()
+                            time.sleep(2)
+                            spanball = driver.find_element(By.XPATH, '//*[@id="abaSeguroDiv"]/div/div[2]/div/div/div/div[1]/div/div/label[1]/span')
+                            spanball.click()
+                            time.sleep(2)
+                            span.click()
+                            time.sleep(2)
+                            inputBall = driver.find_element(By.XPATH,'//*[@id="dadosTipoCTe"]/div[6]/div[2]/div/div/div[1]/div/div/label[2]/span')
+                                                       
+                        
+                            if inputBall:
+                                inputBall.click()
+                                driver.execute_script("window.scrollTo(0, 2100);")
+                                time.sleep(5)
+                                inputValue = driver.find_element(By.XPATH, '//*[@id="subtotalPrestacao"]')
+                                if inputValue:                                                                 
+                                    data = Utils.readXML(util.dir_list[i])                                                                                                          
+                                    info = Cliente.searchCliente(data)  
+                                    time.sleep(1)                                    
+                                    inputValue.send_keys(info)                                      
+                                    time.sleep(1)
+                                    inputText = driver.find_element(By.XPATH,'//*[@id="odc.observacao"]')                                      
+                                    time.sleep(1)   
+                                    if inputText: 
+                                        time.sleep(1)
+                                        nData = "Carga "+data['numero']                                        
+                                        inputText.send_keys(nData)                                        
+                                        time.sleep(2)
+                                        text ='Envio completo '+data['cliente']+" observações " + info    
+                                        Utils.writeLog(text) 
 
                                 btnSend = driver.find_element(By.XPATH, '//*[@id="formId"]/div/div/div/button[1]')
                                 if btnSend:
-                                    btnSend.click()
+                                    # btnSend.click()
                                     time.sleep(10)
                                                                    
                 except:
@@ -158,7 +182,8 @@ class Site:
 
     def scripRobot():        
            Site.login()
+           
                   
                       
-
-Site.scripRobot()
+if __name__ == "__main__":   
+    Site.scripRobot()

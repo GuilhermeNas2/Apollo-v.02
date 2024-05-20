@@ -12,7 +12,7 @@ class AutoGui:
     util = Utils() 
 
     def importArchive(file):         
-        try:    
+        try:               
             imgOne = pyautogui.locateCenterOnScreen(os.environ['pathImg']+'2.png', confidence=0.7)
             if imgOne:      
                 pyautogui.click(imgOne.x, imgOne.y)
@@ -28,4 +28,6 @@ class AutoGui:
             else:
                 print('Elemento não encontrado no destino')
         except:
-            print('Elemento não encontrado na tela')        
+            print('Elemento não encontrado na tela')      
+
+       

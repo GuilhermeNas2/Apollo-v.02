@@ -30,17 +30,30 @@ class Utils:
         todayDate = todayDate.strftime("%d/%m/%Y")        
         return todayDate
 
+    def buscar_tag(elemento, tag_procurada, ):    
+
+        if elemento.tag == tag_procurada:            
+            return elemento.text       
+       
+        for filho in elemento:
+            data = Utils.buscar_tag(filho, tag_procurada)
+            if data:
+                return data
+        return False    
    
 
-    def readXML(file):
+    def readXML(file):       
         
         try:
-            archive = ET.parse(path+file)    
+            
+            archive = ET.parse(path+file)            
             root = archive.getroot() 
-            # print(Utils.findElement(root))
-            frase = root[0][0][25][0].text
-            cliente = root[0][0][1][2].text
-
+            
+            tag_procurada = "{http://www.portalfiscal.inf.br/nfe}xFant"
+            cliente = Utils.buscar_tag(root, tag_procurada)    
+            
+            tag_procurada = "{http://www.portalfiscal.inf.br/nfe}infCpl"
+            frase = Utils.buscar_tag(root, tag_procurada)   
             
             padrao = r'NroCarga:\s*(\d+)\s*-'   
             correspondencia = re.search(padrao, frase)
@@ -51,6 +64,7 @@ class Utils:
                     "cliente": cliente,
                     "numero": numero
                 }
+                print(result)
                 return result
             else:
                 text ="Número não encontrado na frase."
@@ -82,4 +96,4 @@ class Utils:
         archiveLog.write(date+"  "+text+"\n")     
 
 
-Utils.readXML('3.xml')
+# Utils.readXML('3.xml')
