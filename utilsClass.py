@@ -6,6 +6,7 @@ import datetime as dt
 
 from datetime import datetime
 from dotenv import load_dotenv
+from plyer import notification
 
 class Utils:
 
@@ -15,7 +16,7 @@ class Utils:
     
     path = os.getenv("pathXml")
     dir_list = os.listdir(path)          
-
+    
     def __init__(self):
          self.dir_list = dir_list
          self.path = path
@@ -64,36 +65,42 @@ class Utils:
                     "cliente": cliente,
                     "numero": numero
                 }
-                print(result)
+                
                 return result
             else:
                 text ="Número não encontrado na frase."
-                Utils.writeLog(text)
+                Utils.writeLog(text,1)
         except:   
             text ="Arquivo não encontrado no destino."    
-            Utils.writeLog(text) 
-
-    # def findElement(array):  
-        
-    #     for item in array:      
-    #         print(type(item))   
-    #         if isinstance(item, ):   
-    #             print(1)                
-    #             newArray = findElement(item)                
-    #             if newArray is not None:
-    #                 return newArray
-    #         elif isinstance(item, str):                 
-    #              if item == 'infCpl':
-    #                 return item
-    #     return None     
-
-
+            Utils.writeLog(text,1)
    
 
-    def writeLog(text):
+    def writeLog(text, mode):
+
         date = Utils.getDate()
-        archiveLog = open('roboLog', 'a')   
+
+        if mode == 1:
+            archiveLog = open('roboLog', 'a')   
+        
+        if mode == 2:
+            archiveLog = open('succesLog', 'a') 
+
         archiveLog.write(date+"  "+text+"\n")     
 
 
-# Utils.readXML('3.xml')
+    def changePath(file):  
+        newPath = os.getenv("pathConcluidos")
+        os.rename(path+file, newPath+file )
+
+
+    def notify(title,message):
+     notification.notify(
+          title=title,
+          message=message,
+          app_name='Alerta do windows',
+          timeout=10
+     )
+
+    def msg():
+      Utils.notify('Apollo', 'O processo foi finalizado')
+
