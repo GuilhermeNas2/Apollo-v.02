@@ -6,6 +6,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from clienteClass import Cliente
+from emailClass import Email
+from excelClass import Excel
 from utilsClass import Utils
 from autoGuiClass import AutoGui
 from dotenv import load_dotenv
@@ -36,7 +38,7 @@ class Site:
 
             if search is None or searchSecond is None or btnLogin is None:
                 text ="Elemento da tela de login não encontrado."    
-                Utils.writeLog(text)   
+                Utils.writeLog(text,1)   
                 raise
             try:    
                 if search:
@@ -52,12 +54,20 @@ class Site:
                             Site.fillForm()         
             except:            
                 text ='Falha ao inserir dados ou clicar para acessar'    
-                Utils.writeLog(text) 
+                Utils.writeLog(text,1) 
             raise    
         except:  
             time.sleep(5)
             driver.refresh()
             Site.login()
+
+    def findNumber():
+        time.sleep(2)
+        btnList = driver.find_element(By.XPATH, '//*[@id="cabecalhoCreate"]/div[6]/a')
+        btnList.click()
+        time.sleep(4)
+        nTable = driver.find_element(By.XPATH, '//*[@id="dt_list"]/tbody/tr[1]/td[2]').text
+        Excel.insertExcelN(nTable)   
        
 
     def importFile(file):              
@@ -70,7 +80,7 @@ class Site:
                     btnImport = driver.find_element(By.XPATH, '//*[@id="modal-opcoes-emissao"]/div/div/div[2]/div/div[1]/button/i') 
                 except:                      
                     text ='Não achei o botão de importar'
-                    Utils.writeLog(text)
+                    Utils.writeLog(text,1)
 
                 if btnImport:   
                     try:  
@@ -80,7 +90,7 @@ class Site:
                         btnChoosefile = driver.find_element(By.XPATH,'//*[@id="dropzone"]/div')
                     except:                         
                         text ='Não achei o botão de enviar arquivo'   
-                        Utils.writeLog(text) 
+                        Utils.writeLog(text,1) 
 
                     if btnChoosefile:  
                         try:      
@@ -92,7 +102,7 @@ class Site:
                             time.sleep(5)
                         except:                            
                             text ='Não achei o botão depois de escolher o arquivo'    
-                            Utils.writeLog(text)   
+                            Utils.writeLog(text,1)   
 
                         if btnFImport:       
                             try:                     
@@ -100,11 +110,11 @@ class Site:
                                 time.sleep(2)
                             except: 
                                 text ='Não achei o botão de finalizar import'    
-                                Utils.writeLog(text)
+                                Utils.writeLog(text,1)
                             
     def fillForm():
         util = Utils()        
-        for i in range(0,len(util.dir_list)):     
+        for i in range(0,len(util.dir_list),1):     
             try:          
                 Site.importFile(util.dir_list[i])                
                 todayDay = Utils.getDay()
@@ -118,7 +128,7 @@ class Site:
 
                 if inputDate is None or inputDateTwo is None:
                     text ='Elemento não encontrado na tela do Form'    
-                    Utils.writeLog(text) 
+                    Utils.writeLog(text,1) 
                     raise
 
                 try:        
@@ -144,7 +154,9 @@ class Site:
                                 driver.execute_script("window.scrollTo(0, 2100);")
                                 time.sleep(5)
                                 inputValue = driver.find_element(By.XPATH, '//*[@id="subtotalPrestacao"]')
-                                if inputValue:                                                                 
+
+                                if inputValue:  
+
                                     data = Utils.readXML(util.dir_list[i])                                                                                                          
                                     info = Cliente.searchCliente(data)  
                                     time.sleep(1)                                    
@@ -152,38 +164,51 @@ class Site:
                                     time.sleep(1)
                                     inputText = driver.find_element(By.XPATH,'//*[@id="odc.observacao"]')                                      
                                     time.sleep(1)   
-                                    if inputText: 
-                                        time.sleep(1)
-                                        nData = "Carga "+data['numero']                                        
-                                        inputText.send_keys(nData)                                        
-                                        time.sleep(2)
-                                        text ='Envio completo '+data['cliente']+" observações " + info    
-                                        Utils.writeLog(text) 
 
-                                btnSend = driver.find_element(By.XPATH, '//*[@id="formId"]/div/div/div/button[1]')
-                                if btnSend:
-                                    # btnSend.click()
-                                    time.sleep(10)
+                                    if inputText: 
+
+                                        time.sleep(1)
+                                        nData = "Carga "+data['numero'] 
+                                                                              
+                                        inputText.send_keys(nData)  
+                                                
+                                                                    
+                                        time.sleep(2) 
+                                       
+                                    
+                                    text ="Envio completo "+data['cliente'] 
+                                     
+                                    Utils.writeLog(text,2)
+                                    Utils.changePath(util.dir_list[i]) 
+                                    # util.dir_list.remove(util.dir_list[i])                                    
+                                    Site.findNumber()
+                                    # btnSend = driver.find_element(By.XPATH, '//*[@id="formId"]/dion[1]')
+                                    # btnSend = False
+                                    # if btnSend == True:
+                                    #     print('tamo ai')
+                                    # #         btnSend.click()
+                                    # #         time.sleep(10)
+                                    # else:
+                                    #     print(0)
+                                    #     Email.sendEmailTeste('tkdhouse2@gmail.com')
                                                                    
                 except:
                     text ='Falha ao tentar inserir os dados'    
-                    Utils.writeLog(text) 
+                    Utils.writeLog(text,1) 
                     raise
             except:
                 time.sleep(2)
                 driver.refresh()
         driver.quit()                          
-       
-            
-            
-               
-            
+        Utils.msg()    
             
 
     def scripRobot():        
            Site.login()
+           exit()
            
                   
-                      
-if __name__ == "__main__":   
-    Site.scripRobot()
+Site.scripRobot()        
+
+# if __name__ == "__main__":   
+#     Site.scripRobot()
