@@ -61,13 +61,13 @@ class Site:
             driver.refresh()
             Site.login()
 
-    def findNumber():
+    def findNumber(nCarga, value):
         time.sleep(2)
         btnList = driver.find_element(By.XPATH, '//*[@id="cabecalhoCreate"]/div[6]/a')
         btnList.click()
         time.sleep(4)
         nTable = driver.find_element(By.XPATH, '//*[@id="dt_list"]/tbody/tr[1]/td[2]').text
-        Excel.insertExcelN(nTable)   
+        Excel.insertExcelN(nCarga, nTable, value)   
        
 
     def importFile(file):              

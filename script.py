@@ -88,14 +88,25 @@ def xmlTeste():
     print(info)
   
 def excelTeste():
-    info = Excel.searchExcelBF(456896)
+    info = Excel.searchExcelBF(652168756198)
     print(info)
 
 
-def changePath(file):       
+def changePathTeste(file):       
      os.rename(+file, +file )
 
 
+def insertExcelTeste():
+     listNumber = list()
+     listNumber = [78956, 536544, 21546, 2154632, 45568, 3566546, 25463214, 245214]
+
+     for i in range(0, len(listNumber),1): 
+        count = 0
+        while count <= i:            
+            Excel.main(listNumber[i], 'teste:'+str(i), "R$54" )
+            count +=1
+
+excelTeste()
 
 
 

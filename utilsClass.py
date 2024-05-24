@@ -68,7 +68,7 @@ class Utils:
                 
                 return result
             else:
-                text ="Número não encontrado na frase."
+                text ="Número não encontrado na frase ou Nome da empresa não encontrado."
                 Utils.writeLog(text,1)
         except:   
             text ="Arquivo não encontrado no destino."    

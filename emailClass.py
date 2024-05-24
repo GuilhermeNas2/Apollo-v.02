@@ -21,8 +21,7 @@ class Email:
             message = MIMEMultipart("alternative")
             message["Subject"] = "Verificação de Email"
             message["From"] = sender_email
-            message["To"] = email
-            print(2)
+            message["To"] = email            
             
             html = """\
             <html>
