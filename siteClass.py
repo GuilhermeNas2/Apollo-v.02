@@ -1,5 +1,4 @@
 import time
-import pyautogui
 import os
 
 from selenium import webdriver
@@ -62,13 +61,20 @@ class Site:
             Site.login()
 
     def findNumber(nCarga, value):
-        time.sleep(2)
-        btnList = driver.find_element(By.XPATH, '//*[@id="cabecalhoCreate"]/div[6]/a')
-        btnList.click()
-        time.sleep(4)
-        nTable = driver.find_element(By.XPATH, '//*[@id="dt_list"]/tbody/tr[1]/td[2]').text
-        Excel.insertExcelN(nCarga, nTable, value)   
-       
+        try:
+            time.sleep(2)
+            btnList = driver.find_element(By.XPATH, '//*[@id="cabecalhoCreate"]/div[6]/a')
+            btnList.click()
+        except:
+            text ='Não achei o botão da lista de CTE'
+            Utils.writeLog(text,1)
+        try:        
+            time.sleep(4)
+            nTable = driver.find_element(By.XPATH, '//*[@id="dt_list"]/tbody/tr[1]/td[2]').text
+            Excel.insertExcelN(nCarga, nTable, value)  
+        except:     
+            text ='Não achei o botão de importar'
+            Utils.writeLog(text,1)
 
     def importFile(file):              
          time.sleep(5)  
@@ -131,74 +137,71 @@ class Site:
                     Utils.writeLog(text,1) 
                     raise
 
-                try:        
-                    if inputDate:                        
-                        inputDate.send_keys(Keys.ENTER)
-                        time.sleep(1)
-
-                        if inputDateTwo:
-                            inputDateTwo.send_keys(todayDay)
-                            time.sleep(2)
-                            span.click()
-                            time.sleep(2)
-                            spanball = driver.find_element(By.XPATH, '//*[@id="abaSeguroDiv"]/div/div[2]/div/div/div/div[1]/div/div/label[1]/span')
-                            spanball.click()
-                            time.sleep(2)
-                            span.click()
-                            time.sleep(2)
-                            inputBall = driver.find_element(By.XPATH,'//*[@id="dadosTipoCTe"]/div[6]/div[2]/div/div/div[1]/div/div/label[2]/span')
+                       
+                if inputDate:                        
+                    inputDate.send_keys(Keys.ENTER)
+                    time.sleep(1)
+                    if inputDateTwo:
+                        inputDateTwo.send_keys(todayDay)
+                        time.sleep(2)
+                        span.click()
+                        time.sleep(2)
+                        spanball = driver.find_element(By.XPATH, '//*[@id="abaSeguroDiv"]/div/div[2]/div/div/div/div[1]/div/div/label[1]/span')
+                        spanball.click()
+                        time.sleep(2)
+                        span.click()
+                        time.sleep(2)
+                        inputBall = driver.find_element(By.XPATH,'//*[@id="dadosTipoCTe"]/div[6]/div[2]/div/div/div[1]/div/div/label[2]/span')
                                                        
-                        
-                            if inputBall:
-                                inputBall.click()
-                                driver.execute_script("window.scrollTo(0, 2100);")
-                                time.sleep(5)
-                                inputValue = driver.find_element(By.XPATH, '//*[@id="subtotalPrestacao"]')
+                  
+                        if inputBall:
+                            inputBall.click()
+                            driver.execute_script("window.scrollTo(0, 2100);")
+                            time.sleep(5)
+                            inputValue = driver.find_element(By.XPATH, '//*[@id="subtotalPrestacao"]')
 
-                                if inputValue:  
+                            if inputValue:  
+                                data = Utils.readXML(util.dir_list[i]) 
 
-                                    data = Utils.readXML(util.dir_list[i])                                                                                                          
-                                    info = Cliente.searchCliente(data)  
-                                    time.sleep(1)                                    
-                                    inputValue.send_keys(info)                                      
+                                if data is None or data is 'nan':
+                                    raise      
+                                                  
+                                info = Cliente.searchCliente(data) 
+
+                                if info is None:
+                                    raise
+
+                                time.sleep(1)                                    
+                                inputValue.send_keys(info)                                      
+                                time.sleep(1)
+                                inputText = driver.find_element(By.XPATH,'//*[@id="odc.observacao"]')                                      
+                                time.sleep(1)   
+
+                                if inputText: 
                                     time.sleep(1)
-                                    inputText = driver.find_element(By.XPATH,'//*[@id="odc.observacao"]')                                      
-                                    time.sleep(1)   
-
-                                    if inputText: 
-
-                                        time.sleep(1)
-                                        nData = "Carga "+data['numero'] 
-                                                                              
-                                        inputText.send_keys(nData)  
-                                                
-                                                                    
-                                        time.sleep(2) 
-                                       
+                                    nData = "Carga "+data['numero']                                                                               
+                                    inputText.send_keys(nData)   
+                                    time.sleep(2)                                      
                                     
-                                    text ="Envio completo "+data['cliente'] 
-                                     
-                                    Utils.writeLog(text,2)
-                                    Utils.changePath(util.dir_list[i]) 
-                                    # util.dir_list.remove(util.dir_list[i])                                    
-                                    Site.findNumber()
-                                    # btnSend = driver.find_element(By.XPATH, '//*[@id="formId"]/dion[1]')
-                                    # btnSend = False
-                                    # if btnSend == True:
-                                    #     print('tamo ai')
-                                    # #         btnSend.click()
-                                    # #         time.sleep(10)
-                                    # else:
-                                    #     print(0)
-                                    #     Email.sendEmailTeste('tkdhouse2@gmail.com')
-                                                                   
-                except:
-                    text ='Falha ao tentar inserir os dados'    
-                    Utils.writeLog(text,1) 
-                    raise
+                                text ="Envio completo "+data['cliente']                                      
+                                Utils.writeLog(text,2)
+                                                                                             
+                                btnSend = driver.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[2]/div[3]/div/form/div/div/div/button[1]')                                
+                                if btnSend:                                    
+                                    btnSend.click()
+                                    time.sleep(2)
+                                    alert = driver.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[2]/div[3]/ul/li')
+                                    if alert:
+                                       Email.sendEmailTeste('tkdhouse2@gmail.com') 
+                                       raise   
+                                    else:    
+                                        time.sleep(10)
+                                        Site.findNumber(data['numero'],info)   
+                                        Utils.changePath(util.dir_list[i])       
+                  
             except:
                 time.sleep(2)
-                driver.refresh()
+                continue
         driver.quit()                          
         Utils.msg()    
             

@@ -7,7 +7,7 @@ class Cliente:
         "ATACADO BF VGP": Excel.searchExcelBF        
     }    
 
-    def searchCliente(data):
+    def searchCliente(data):      
       clienteAtual = data['cliente']      
       if clienteAtual in Cliente.clientes:
             clientFunc = Cliente.clientes[clienteAtual]

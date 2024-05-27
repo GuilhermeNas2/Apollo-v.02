@@ -98,15 +98,23 @@ def changePathTeste(file):
 
 def insertExcelTeste():
      listNumber = list()
-     listNumber = [78956, 536544, 21546, 2154632, 45568, 3566546, 25463214, 245214]
+     listNumber = [78956, 536544, 21546, 6, 2154632, 45568, 3566546, 25463214, 245214]
 
      for i in range(0, len(listNumber),1): 
         count = 0
-        while count <= i:            
-            Excel.main(listNumber[i], 'teste:'+str(i), "R$54" )
+        while count <= 3:                     
+            Excel.insertExcelN(listNumber[i], 'teste:'+str(i), "R$54" )
             count +=1
 
-excelTeste()
+def testeFor():
+     listNumber = list()
+     listNumber = [78956, 536544, 21546, 10, 2154632, 45568, 3566546, 25463214, 245214]
 
+     for i in range(0, len(listNumber),1): 
+        if listNumber[i] <= 10:            
+            continue
+        print(listNumber[i])
+        
+xmlTeste()
 
 

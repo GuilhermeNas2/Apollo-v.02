@@ -71,8 +71,12 @@ class Utils:
                 text ="Número não encontrado na frase ou Nome da empresa não encontrado."
                 Utils.writeLog(text,1)
         except:   
-            text ="Arquivo não encontrado no destino."    
-            Utils.writeLog(text,1)
+            try:
+                if archive in vars():                    
+                    return                    
+            except:
+                text ="Arquivo XML não encontrado no destino."    
+                Utils.writeLog(text,1)
    
 
     def writeLog(text, mode):
