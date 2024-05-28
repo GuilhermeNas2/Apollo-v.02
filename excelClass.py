@@ -1,24 +1,73 @@
 from openpyxl import load_workbook
+from decimal import Decimal
 import pandas as pd
 import os
+import re
 from utilsClass import Utils
 from dotenv import load_dotenv
+import xlwings 
 
 class Excel:
      
      global nomeDoArquivo  
-     global path 
-    
+     global path   
 
      load_dotenv()
      path = os.getenv("pathEx")
 
-     dir_list = os.listdir(path) 
+     dir_list = os.listdir(path)     
+    
+     nomeDoArquivo = path+dir_list[0]    
      
-     if dir_list[0] == 'tempo.xlsx':         
-        nomeDoArquivo = path+dir_list[1]   
-     else:
-        nomeDoArquivo = path+dir_list[1]    
+     def teste(data):
+        valor_procurado = data
+        itensList = []          
+
+        colunaN = "NOTAS" 
+        colunaF = "Total Frete"  
+
+        wb = load_workbook(nomeDoArquivo)    
+
+        ctePage = wb['Dados Viagens']
+        rowC = None
+        
+        while len(itensList) <= 1:
+            for row in ctePage:            
+                for cel in row:
+                    if cel.value == colunaF:                                                       
+                        itensList.append(cel.column_letter)                        
+                    if cel.value == colunaN:
+                        itensList.append(cel.column)   
+
+        for row in ctePage.iter_rows(max_row=350,min_col= 4, max_col= 4):
+            for cel in row: 
+                if type(cel.value) == float:
+                    valor_procurado = data+".0"                                         
+                if str(cel.value) == str(valor_procurado) and rowC is None:                                    
+                    rowC = cel.row 
+        if rowC == None:
+            return rowC           
+        notas = Decimal(ctePage.cell(row=rowC, column=itensList[0]).value)  
+    
+        app = xlwings.App(visible=False)  
+        wbl = xlwings.Book(nomeDoArquivo)
+        
+        ctePagel = wbl.sheets['Dados Viagens']
+        loc = itensList[1]+str(rowC)        
+        frete = Decimal(ctePagel.range(loc).value) 
+       
+        # item = frete/notas
+        # item = item.quantize(Decimal('1.00'))
+        
+        frete =float('%.2f'%frete)                
+        notas = float(notas)
+        item = frete/notas
+        item = float('%.2f'%item)                  
+        wb.close()
+        app.quit()        
+        return item
+        
+                  
 
      def searchExcelBF(data):   
             try:     
@@ -28,7 +77,7 @@ class Excel:
                 colunaN = "NOTAS" 
                 colunaF = "Total Frete"                
                       
-                df = pd.read_excel(nomeDoArquivo, sheet_name='Dados Viagens', engine='openpyxl') 
+                df = pd.read_excel(nomeDoArquivo, sheet_name='Dados Viagens') 
 
                 while len(itensList) <= 1:
                     for celula in df:                  
@@ -39,14 +88,13 @@ class Excel:
                     count += 1                 
                 for index,row in df.iterrows():      
                     for column,value in row.items():  
-                           
+                        print(value)   
                         if str(value) == str(valor_procurado):                                 
                             row1 = row.name   
                 
-                notas = df.at[row1, itensList[0]]
-                frete = df.at[row1, itensList[1]] 
-                
-                
+                frete = df.at[row1, itensList[1]]
+                notas = df.at[row1, itensList[0]]                                 
+                print(frete)
                 frete =float('%.2f'%frete)                
                 notas = float(notas)
                 item = frete/notas
@@ -74,10 +122,13 @@ class Excel:
         rowl = None  
         cond = True
         count = 0
+             
+        wb = load_workbook(nomeDoArquivo)      
+        ctePage = wb['CTE']    
 
-        wb = load_workbook(path+'tempo.xlsx')      
-        ctePage = wb['CTE']
-        
+        padrao = r'\s*(\d+)\s*/' 
+        data = re.search(padrao, data)
+
         for row in ctePage.iter_rows(min_col= 1, max_col=26):            
             for cel in row:
                 if cel.value == title:                                                         
@@ -117,31 +168,28 @@ class Excel:
                rowl += 1
 
             if cell.value is None:                
-                cell.value = data
+                cell.value = data.group(1)
                 coll+=1
                 cellTwo = ctePage.cell(row=rowl, column=coll)
-                if cellTwo.value is None:
-                   
+                if cellTwo.value is None:                   
                     cellTwo.value = valor
                     rowl += 1
                     coll = 1
                     cond = False 
-                                      
-        wb.save(path+'tempo.xlsx')  
+                                  
+        wb.save(nomeDoArquivo)  
         # with pd.ExcelWriter(nomeDoArquivo, engine='openpyxl', mode='a',if_sheet_exists='replace') as writer:
         #     writer._book = wb
         #     writer._sheets = {ws.title: ws for ws in wb.worksheets}
 
         #     # Escrever o DataFrame na planilha específica
-        #     df.to_excel(writer, sheet_name='CTE', index=False)            
-            
-            
-        print('foi')        
+        #     df.to_excel(writer, sheet_name='CTE', index=False)     
+           
         return            
                     
                 
                     
-# Excel.insertExcelN('6','1','1')        
-# Excel.insertExcelN('7','1','1')   
+# Excel.insertExcelN('6','152745/1','1')        
+# Excel.teste('3414011')   
 
 

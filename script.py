@@ -84,12 +84,15 @@ def emailTeste():
 
 def xmlTeste():    
     infos = Utils.readXML('4.xml')
-    info = Cliente.searchCliente(infos)
+    info = Cliente.searchCliente(infos)    
     print(info)
   
 def excelTeste():
-    info = Excel.searchExcelBF(652168756198)
-    print(info)
+    info = Excel.teste(3407)
+    if info == None or info == 'nan':        
+        print(info)
+    else:
+        print('ola')    
 
 
 def changePathTeste(file):       
@@ -115,6 +118,6 @@ def testeFor():
             continue
         print(listNumber[i])
         
-xmlTeste()
+excelTeste()
 
 

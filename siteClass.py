@@ -162,15 +162,11 @@ class Site:
 
                             if inputValue:  
                                 data = Utils.readXML(util.dir_list[i]) 
-
-                                if data is None or data is 'nan':
-                                    raise      
-                                                  
+                                if info == None or info == 'nan':
+                                    raise                                                        
                                 info = Cliente.searchCliente(data) 
-
-                                if info is None:
+                                if info == None or info == 'nan':
                                     raise
-
                                 time.sleep(1)                                    
                                 inputValue.send_keys(info)                                      
                                 time.sleep(1)
