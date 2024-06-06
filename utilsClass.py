@@ -47,15 +47,16 @@ class Utils:
         
         try:
             
-            archive = ET.parse(path+file)            
+            archive = ET.parse(path+file)  
+                     
             root = archive.getroot() 
             
             tag_procurada = "{http://www.portalfiscal.inf.br/nfe}xFant"
             cliente = Utils.buscar_tag(root, tag_procurada)    
-            
+               
             tag_procurada = "{http://www.portalfiscal.inf.br/nfe}infCpl"
             frase = Utils.buscar_tag(root, tag_procurada)   
-            
+              
             padrao = r'NroCarga:\s*(\d+)\s*-'   
             correspondencia = re.search(padrao, frase)
 
@@ -107,4 +108,15 @@ class Utils:
 
     def msg():
       Utils.notify('Apollo', 'O processo foi finalizado')
+
+    def findText(text):        
+        frase= text
+        # textoEspeci = 'não pode ser vazio'
+        textoEspeci = 'O campo "Previsão de Entrega" não pode ser inferior a data de emissão do CT-e.'
+        
+        result = re.search(textoEspeci, frase)
+        if result:
+            return True
+        else:
+            return False      
 

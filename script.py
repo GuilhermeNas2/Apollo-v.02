@@ -1,5 +1,6 @@
 #Classe feita para teste Unitarios e possiveis novas Features
-
+import re
+import time
 from openpyxl import load_workbook
 from dotenv import load_dotenv
 from clienteClass import Cliente
@@ -8,8 +9,11 @@ from excelClass import Excel
 from utilsClass import Utils
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
-
+from email.mime.base import MIMEBase
+from email import encoders
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 import os
 import smtplib
@@ -50,6 +54,24 @@ def sendEmailTeste():
         part = MIMEText(html, "html")
         message.attach(part)
 
+        file_path = 'C:\\Users\\tkdho\\Desktop\\program\\roboLogistica\\XML\\4.xml'
+        with open(file_path, "rb") as attachment:
+            # Cria um objeto MIMEBase
+            part = MIMEBase("application", "octet-stream")
+            part.set_payload(attachment.read())
+            
+            # Codifica o conteúdo do anexo em Base64
+            encoders.encode_base64(part)
+            
+            # Adiciona cabeçalhos ao anexo
+            part.add_header(
+                "Content-Disposition",
+                f"attachment; filename= {os.path.basename(file_path)}",
+            )
+            
+            # Anexa o arquivo à mensagem
+            message.attach(part)
+
         try:
             with smtplib.SMTP_SSL(smtp_server, port) as server:                
                 server.login(sender_email, password)
@@ -83,41 +105,71 @@ def emailTeste():
     mail.logout()
 
 def xmlTeste():    
-    infos = Utils.readXML('4.xml')
+    infos = Utils.readXML('4.xml')    
     info = Cliente.searchCliente(infos)    
-    print(info)
+    if info == None or info == 'nan':
+        print('ola')  
+    else:
+        print(info)  
   
 def excelTeste():
     info = Excel.teste(3407)
-    if info == None or info == 'nan':        
-        print(info)
+    if info == None or info == 'nan':                
+        print('ola')  
     else:
-        print('ola')    
+        print(info)  
 
 
 def changePathTeste(file):       
-     os.rename(+file, +file )
+     Utils.changePath(file)
 
 
 def insertExcelTeste():
+     infos = Utils.readXML('5.xml')
      listNumber = list()
-     listNumber = [78956, 536544, 21546, 6, 2154632, 45568, 3566546, 25463214, 245214]
+     listNumber = [infos['numero']]
+     info = Cliente.searchCliente(infos)    
 
      for i in range(0, len(listNumber),1): 
         count = 0
-        while count <= 3:                     
-            Excel.insertExcelN(listNumber[i], 'teste:'+str(i), "R$54" )
+        while count <= 1:                     
+            Excel.insertExcelN(listNumber[i], '54156/5656', info )
             count +=1
 
 def testeFor():
      listNumber = list()
-     listNumber = [78956, 536544, 21546, 10, 2154632, 45568, 3566546, 25463214, 245214]
+     listNumber = ['78958989']
 
      for i in range(0, len(listNumber),1): 
         if listNumber[i] <= 10:            
             continue
         print(listNumber[i])
-        
-excelTeste()
 
+def testeWord(text):
+    frase= text
+    textoEspeci = 'não pode ser vazio'
 
+    result = re.search(textoEspeci, frase)
+    if result:
+        print('oi')
+    else:
+        print('nao')
+
+def testeError():            
+    driver = webdriver.Chrome() 
+    driver.get(os.getenv("url"))
+    time.sleep(2)        
+    driver.maximize_window()
+    try:    
+        search = driver.find_element(By.XPATH, '//*[@id="login-container"]/form/fieldset/div[1]/div[1]/div/div/input') 
+        Email.sendEmailTeste('4.xml', {'cliente':'ATACADO BF VGP'})
+    except KeyError as e:
+        print('search')
+
+    except Exception as e:
+        print('ola')
+
+xmlTeste()
+
+# emailList = Cliente.searchEmail({'cliente':"ATACADO BF VGP"})
+# print(emailList)
