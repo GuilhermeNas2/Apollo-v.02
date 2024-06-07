@@ -4,7 +4,7 @@ class Cliente:
 
     clientes = {
         "ATACADO BF VGP": { 'Formula':Excel.searchExcelBF, 
-                            'Emails': ['faturamento.vgp@bateforte.com.br','transporte9.vgp@bateforte.com.br','paulosantos@bfmail.com.br']}       
+                            'Emails': ['tkdhouse2@gmail.com']}       
     }    
 
     def searchCliente(data):      
