@@ -8,18 +8,12 @@ from datetime import datetime
 from dotenv import load_dotenv
 from plyer import notification
 
-class Utils:
-
-    global path 
-    global dir_list     
-    load_dotenv()
-    
-    path = os.getenv("pathXml")
-    dir_list = os.listdir(path)          
+class Utils:   
     
     def __init__(self):
-         self.dir_list = dir_list
-         self.path = path
+         load_dotenv()          
+         self.path = os.getenv("pathXml")
+         self.dir_list = os.listdir(self.path) 
 
     def getDate():
         todayDate = datetime.now()
@@ -43,12 +37,9 @@ class Utils:
         return False    
    
 
-    def readXML(file):       
-        
-        try:
-            
-            archive = ET.parse(path+file)  
-                     
+    def readXML(self,file):  
+        try:            
+            archive = ET.parse(self.path+file) 
             root = archive.getroot() 
             
             tag_procurada = "{http://www.portalfiscal.inf.br/nfe}xFant"
@@ -81,21 +72,17 @@ class Utils:
    
 
     def writeLog(text, mode):
-
         date = Utils.getDate()
-
         if mode == 1:
-            archiveLog = open('roboLog', 'a')   
-        
+            archiveLog = open('roboLog', 'a')           
         if mode == 2:
             archiveLog = open('succesLog', 'a') 
-
         archiveLog.write(date+"  "+text+"\n")     
 
 
-    def changePath(file):  
+    def changePath(self,file):  
         newPath = os.getenv("pathConcluidos")
-        os.rename(path+file, newPath+file )
+        os.rename(self.path+file, newPath+file )
 
 
     def notify(title,message):

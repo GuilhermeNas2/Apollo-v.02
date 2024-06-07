@@ -2,31 +2,29 @@ import xlwings
 import pandas as pd
 import os
 import re
+
 from utilsClass import Utils
 from dotenv import load_dotenv
 from decimal import Decimal, ROUND_HALF_UP
 from openpyxl import load_workbook
 
-class Excel:
+class Excel: 
      
-     global nomeDoArquivo  
-     global path   
-
-     load_dotenv()
-     path = os.getenv("pathEx")
-
-     dir_list = os.listdir(path)     
-    
-     nomeDoArquivo = path+dir_list[0]    
-     
-     def searchExcelBF(data):
+     @classmethod
+     def initialize(cls, nomeDoArquivo):
+         load_dotenv()        
+         cls.path = os.getenv("pathEx") 
+         cls.nomeDoArquivo = cls.path+nomeDoArquivo
+       
+     @classmethod   
+     def searchExcelBF(cls,data):      
+        
         valor_procurado = data
-        itensList = []          
-
+        itensList = [] 
         colunaN = "NOTAS" 
-        colunaF = "Total Frete"  
+        colunaF = "Total Frete"
 
-        wb = load_workbook(nomeDoArquivo)    
+        wb = load_workbook(cls.nomeDoArquivo)    
 
         ctePage = wb['Dados Viagens']
         rowC = None
@@ -37,8 +35,7 @@ class Excel:
                     if cel.value == colunaF:                                                       
                         itensList.append(cel.column_letter)                        
                     if cel.value == colunaN:
-                        itensList.append(cel.column)   
-        print(valor_procurado)                
+                        itensList.append(cel.column)                         
 
         for row in ctePage.iter_rows(min_col= 4, max_col= 4):
             for cel in row: 
@@ -53,7 +50,7 @@ class Excel:
         notas = Decimal(ctePage.cell(row=rowC, column=itensList[0]).value)
     
         app = xlwings.App(visible=False)  
-        wbl = xlwings.Book(nomeDoArquivo)
+        wbl = xlwings.Book(Excel.nomeDoArquivo)
         
         ctePagel = wbl.sheets['Dados Viagens']
         loc = itensList[1]+str(rowC)        
@@ -67,15 +64,16 @@ class Excel:
         app.quit()    
            
         return item  
-
-     def insertExcelN(title,data, valor):
+     
+     @classmethod
+     def insertExcelN(cls,title,data, valor):
         coll = 1
         maxColl = 26    
         rowl = None  
         cond = True
         count = 1
              
-        wb = load_workbook(nomeDoArquivo)      
+        wb = load_workbook(cls.nomeDoArquivo)      
         ctePage = wb['CTE']    
 
         padrao = r'\s*(\d+)\s*/' 
@@ -131,7 +129,7 @@ class Excel:
                     coll = 1
                     cond = False 
                                   
-        wb.save(nomeDoArquivo)                      
+        wb.save(cls.nomeDoArquivo)                      
         return         
                     
                 

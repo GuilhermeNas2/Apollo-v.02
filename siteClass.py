@@ -16,9 +16,11 @@ class Site:
     global driver   
     global runState
     global count
-
-    load_dotenv()
+        
     driver = webdriver.Chrome() 
+
+    def __init__(self):
+        load_dotenv()  
 
     def getChrome():        
         driver.get(os.getenv("url"))
@@ -140,7 +142,7 @@ class Site:
              
             
     def fillForm():
-        util = Utils()         
+        util = Utils()                
         for i in range(0,len(util.dir_list),1):     
             try:      
                 try:                        
@@ -188,10 +190,11 @@ class Site:
                     raise 
                 try:           
                     if inputValue:  
-                        data = Utils.readXML(util.dir_list[i]) 
+                        data = util.readXML(util.dir_list[i]) 
                         if data == None or data == 'nan':
-                            raise                                                        
-                        info = Cliente.searchCliente(data) 
+                            raise        
+                        client = Cliente(data)                                                 
+                        info = client.searchCliente() 
                         if info == None or info == 'nan':
                             raise
                         time.sleep(1)                                    
@@ -216,7 +219,7 @@ class Site:
                     raise 
                 try:      
                     Site.findNumber(data['numero'],info)   
-                    Utils.changePath(util.dir_list[i])       
+                    util.changePath(util.dir_list[i])       
                     text ="Envio completo "+data['cliente']                                      
                     Utils.writeLog(text,2)
                 except Exception as e:
@@ -237,8 +240,9 @@ class Site:
         Utils.msg()    
             
 
-    def scripRobot():        
-           Site.login()
+    def scripRobot():
+           site = Site()        
+           site.login()
            exit()
            
                   

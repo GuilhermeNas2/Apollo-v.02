@@ -42,22 +42,19 @@ class Email:
                 part = MIMEText(html, "html")
                 message.attach(part)
 
-                file_path = 'C:\\Users\\tkdho\\Desktop\\program\\roboLogistica\\XML\\'+archive
+                file_path = os.getenv('pathXML')+archive
                 with open(file_path, "rb") as attachment:
-                    # Cria um objeto MIMEBase
+                    
                     part = MIMEBase("application", "octet-stream")
-                    part.set_payload(attachment.read())
+                    part.set_payload(attachment.read())                   
                     
-                    # Codifica o conteúdo do anexo em Base64
-                    encoders.encode_base64(part)
+                    encoders.encode_base64(part)                    
                     
-                    # Adiciona cabeçalhos ao anexo
                     part.add_header(
                         "Content-Disposition",
                         f"attachment; filename= {os.path.basename(file_path)}",
-                    )
-                    
-                    # Anexa o arquivo à mensagem
+                    )                   
+                   
                     message.attach(part)
 
                 try:
@@ -68,4 +65,3 @@ class Email:
                 except Exception as e:
                     print(f"Deu errado {e}")
 
-# Email.sendEmailTeste('4.xml', {'cliente':'ATACADO BF VGP'})                    
