@@ -18,9 +18,7 @@ class Site:
     global count
         
     driver = webdriver.Chrome() 
-
-    def __init__(self):
-        load_dotenv()  
+    load_dotenv()  
 
     def getChrome():        
         driver.get(os.getenv("url"))
@@ -212,7 +210,7 @@ class Site:
                             if btnSend:                                    
                                 # btnSend.click()
                                 time.sleep(4)
-                                alert = Site.findAlert(util.dir_list[i],data)
+                                alert = Site.findAlert(util.dir_list[i],client)
                                 if alert == False:
                                     raise       
                 except Exception as e:
@@ -241,8 +239,7 @@ class Site:
             
 
     def scripRobot():
-           site = Site()        
-           site.login()
+           Site.login()
            exit()
            
                   

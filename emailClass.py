@@ -1,6 +1,5 @@
 import os
 import smtplib
-import imaplib
 
 from email.mime.base import MIMEBase
 from email import encoders
@@ -12,10 +11,10 @@ from clienteClass import Cliente
 class Email:
     load_dotenv()
    
-    def sendEmailTeste(archive, cliente):               
+    def sendEmailTeste(archive, cliente):                         
             email = os.getenv("email")
             password = os.getenv("passwordEmail")
-            emailList = Cliente.searchEmail(cliente)
+            emailList = cliente.searchEmail()
 
             smtp_server = "smtp.gmail.com"
             port = 465
@@ -65,3 +64,5 @@ class Email:
                 except Exception as e:
                     print(f"Deu errado {e}")
 
+# cliente = Cliente({"numero": "5864584", "cliente":"ATACADO BF VGP"})
+# Email.sendEmailTeste('4.xml', cliente)
