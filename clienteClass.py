@@ -6,8 +6,8 @@ class Cliente:
     #No segundo jeito o arquivo excel devera ser passado como parametro de todas as funções que mexem com o caminho dele, tanto a search como a insert
     clientes = {
         "ATACADO BF VGP": { 'Formula':Excel.searchExcelBF, 
-                            'Excel': 'Fechamento_BATE_FORTE_VARGEM_.xlsx',
-                            'Emails': ['tkdhouse2@gmail.com']}       
+                            'Excel': 'teste.xlsx',
+                            'Emails': ['teste@gmail.com']}       
     }    
 
     def __init__(self, data):

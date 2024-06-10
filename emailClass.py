@@ -21,7 +21,7 @@ class Email:
             sender_email = email
             
             for i in range(0, len(emailList),1):
-                receiver_email = 'tkdhouse2@gmail.com'
+                receiver_email =  os.getenv("email")
                 message = MIMEMultipart("alternative")
                 message["Subject"] = "Verificação de Email"
                 message["From"] = sender_email

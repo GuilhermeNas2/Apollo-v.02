@@ -28,3 +28,20 @@ emailsClientes= "Deve ser uma lista de emails [exem@gmail.com]" <br>
 <p>Bom, como já dito anteriormente esse código está configurado para atender as regras de negócios de um cliente, então vou comentar o que as funções fazem e o que pode ser 
 alterado para funcionar com você</p>
 <img src="./Imagens/ExcelS.png">
+<p>Basicamente essa função deve procurar em uma planilha excel um valor específico, que vem do parâmetro "data", assim que achar, a linha é salva e agora o robô deve achar as colunas referênciadas nas variáveis colunaF e colunaN (Esses valores podem ser alterados para atender a sua demanda). Curiosidade, existe uma condição dentro do "for" que verifica se o valor
+da célula é float ou int, eu tive que colocar isso pois outra função da classe Excel faz mudançar no arquivo e por algum motivo que eu não sei ainda o tipo do valor nessa coluna
+pode ser alterado para float. Após os valores serem encontrados, o Apollo faz uma divisão entre eles e retorna esse valor para o script principal</p>
+<img src="./Imagens/ExcelI.png">
+<p>Essa função como o nome já diz, é usada para inserir 3 valores em uma outra planilha do mesmo Excel, básicamente uma tabela é criada com o "title" sendo um código padrão para 
+os lotes de XML's que estão sendo inseridos, antes de inserir é verificado se o valor já não existe na planilha, caso não exista o script procura um espaço "limpo" para iniciar. Ao lado dele é escrito uma frase referente ao processo, e abaixo deverá ser criada uma linha com "data" que é outro código gerado quando 
+o formulário é preenchido no site, é necessário que esse código tenha "/" pois o código é procura essa barra para saber qual parte da informação é relevante, caso você não precise, basta retirar o regex dessa função. Logo a frente é escrito o "valor", que nada mais é do que o resultado retornado da função anterior.</p>
+<img src="./Imagens/XML.png">
+<p>Esse método é bem simples, primeiro é preciso que seja passado como parâmetro um arquivo xml, após isso deve ser ajustado 2 valores, os dois dizem respeito ao nome da tag que leva as informações necessárias para o seu processo. Adendo, novamente eu uso regex na minha segunda tag, caso não precise basta retirar. E por último é retornado um objeto com os valores.</p>
+<img src="./Imagens/Email.png">
+<p>
+    Bom, o método dos emails funciona da seguinte forma nesse código, é passado como parâmetro um arquivo que é enviado como anexo da mensagem, e o cliente que o Apollo configurou com base no XML, depois disso é feito um "for" com base na lista de emails, assim enviando quantos emails forem necessários. Ps.: Eu nesse presente momento eu não se o código funciona para outros emails além do Gmail, atualizo essa parte caso seja preciso posteiormente.
+</p>
+<img src="./Imagens/Clientes.png">
+<p>
+    Já começo aqui pedindo desculpas por essa parte do código, como ainda não recebi aval para fazer uma banco de dados essa part preenche bem o vazio kkkk. Basicamente essa classe tem um dicionário contendo o nome do cliente, que deve ser o mesmo nome que esta no XML no meu caso, e alguns valores referentes a ele, o primeiro é uma função, pois como o objetivo desse script é satisfazer o processo de vários clientes, possivelmente algumas mudanças devem ser feitas entre eles, então é justificado que as funções possam ser dinâmicas durante todo o processo do robô. O segundo é o nome do excel que é usado para esse cliente. E por último temos uma lista com alguns emails referente a essa pessoa/empresa.
+</p>
