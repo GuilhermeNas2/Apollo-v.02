@@ -41,7 +41,7 @@ o formulário é preenchido no site, é necessário que esse código tenha "/" p
 <p>
     Bom, o método dos emails funciona da seguinte forma nesse código, é passado como parâmetro um arquivo que é enviado como anexo da mensagem, e o cliente que o Apollo configurou com base no XML, depois disso é feito um "for" com base na lista de emails, assim enviando quantos emails forem necessários. Ps.: Eu nesse presente momento eu não se o código funciona para outros emails além do Gmail, atualizo essa parte caso seja preciso posteiormente.
 </p>
-<img src="./Imagens/Clientes.png">
+<img src="./Imagens/Cliente.png">
 <p>
     Já começo aqui pedindo desculpas por essa parte do código, como ainda não recebi aval para fazer uma banco de dados essa part preenche bem o vazio kkkk. Basicamente essa classe tem um dicionário contendo o nome do cliente, que deve ser o mesmo nome que esta no XML no meu caso, e alguns valores referentes a ele, o primeiro é uma função, pois como o objetivo desse script é satisfazer o processo de vários clientes, possivelmente algumas mudanças devem ser feitas entre eles, então é justificado que as funções possam ser dinâmicas durante todo o processo do robô. O segundo é o nome do excel que é usado para esse cliente. E por último temos uma lista com alguns emails referente a essa pessoa/empresa.
 </p>
