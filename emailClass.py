@@ -64,5 +64,3 @@ class Email:
                 except Exception as e:
                     print(f"Deu errado {e}")
 
-# cliente = Cliente({"numero": "5864584", "cliente":"ATACADO BF VGP"})
-# Email.sendEmailTeste('4.xml', cliente)
