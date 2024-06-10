@@ -5,7 +5,7 @@ class Cliente:
     #deve ser passado então apenas o arquivo excel do cliente, e a classe deve ser instanciada para que a função passo implicitamente o parametro Self.
     #No segundo jeito o arquivo excel devera ser passado como parametro de todas as funções que mexem com o caminho dele, tanto a search como a insert
     clientes = {
-        "ATACADO BF VGP": { 'Formula':Excel.searchExcelBF, 
+        "Cliente": { 'Formula':Excel.searchExcelBF, 
                             'Excel': 'teste.xlsx',
                             'Emails': ['teste@gmail.com']}       
     }    

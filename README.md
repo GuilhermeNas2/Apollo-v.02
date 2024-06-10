@@ -13,7 +13,7 @@
 
 
 <h2>Requisitos</h2>
-<p>Para o funcionamento correto do robô, é necessário clonar o repositório nesse link aqui "https://github.com/GuilhermeNas2/Apollo-v.02.git",após isso devem ser criadas 3 pastas na raiz do projeto: Excel, XML, Concluídos (o nome pode variar, basta mudar ele no caminho). Também é necessário um arquivo .env contendo algumas variáveis específicas que você pode conferir abaixo.</p>
+<p>Para o funcionamento correto do robô, é necessário clonar o repositório nesse link aqui "https://github.com/GuilhermeNas2/Apollo-v.02.git" , após isso devem ser criadas 3 pastas na raiz do projeto: Excel, XML, Concluídos (o nome pode variar, basta mudar ele no caminho). Também é necessário um arquivo .env contendo algumas variáveis específicas que você pode conferir abaixo.</p>
 <span>
 user= "Usuário para logar no site" <br>
 password= "Senha do usuário" <br>
@@ -45,3 +45,5 @@ o formulário é preenchido no site, é necessário que esse código tenha "/" p
 <p>
     Já começo aqui pedindo desculpas por essa parte do código, como ainda não recebi aval para fazer uma banco de dados essa part preenche bem o vazio kkkk. Basicamente essa classe tem um dicionário contendo o nome do cliente, que deve ser o mesmo nome que esta no XML no meu caso, e alguns valores referentes a ele, o primeiro é uma função, pois como o objetivo desse script é satisfazer o processo de vários clientes, possivelmente algumas mudanças devem ser feitas entre eles, então é justificado que as funções possam ser dinâmicas durante todo o processo do robô. O segundo é o nome do excel que é usado para esse cliente. E por último temos uma lista com alguns emails referente a essa pessoa/empresa.
 </p>
+<h2>Uso<h2>
+<p></p>
