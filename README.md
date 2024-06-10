@@ -27,4 +27,4 @@ emailsClientes= "Deve ser uma lista de emails [exem@gmail.com]" <br>
 <h2>Configurações</h2>
 <p>Bom, como já dito anteriormente esse código está configurado para atender as regras de negócios de um cliente, então vou comentar o que as funções fazem e o que pode ser 
 alterado para funcionar com você</p>
-<img src="./Imagens/ExcelS.PNG">
+<img src="./Imagens/ExcelS.png">
