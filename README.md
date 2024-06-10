@@ -46,4 +46,7 @@ o formulário é preenchido no site, é necessário que esse código tenha "/" p
     Já começo aqui pedindo desculpas por essa parte do código, como ainda não recebi aval para fazer uma banco de dados essa part preenche bem o vazio kkkk. Basicamente essa classe tem um dicionário contendo o nome do cliente, que deve ser o mesmo nome que esta no XML no meu caso, e alguns valores referentes a ele, o primeiro é uma função, pois como o objetivo desse script é satisfazer o processo de vários clientes, possivelmente algumas mudanças devem ser feitas entre eles, então é justificado que as funções possam ser dinâmicas durante todo o processo do robô. O segundo é o nome do excel que é usado para esse cliente. E por último temos uma lista com alguns emails referente a essa pessoa/empresa.
 </p>
 <h2>Uso<h2>
-<p></p>
+<p>De uma forma geral, o script roda completo dentro do arquivo siteClass.py com o comando padrão do python, e existe algumas classes para teste que podem ser usadas para testar o código com alguns métodos isolados.
+</p>
+<h2>Agradecimentos<h2>
+<p>Espero que tenha ficado claro a maioria dos pontos que abordei nesse arquivo, e também espero que gostem e que tenham descoberto algo novo com meu código.Estou aberto para críticas e melhorias</p>
